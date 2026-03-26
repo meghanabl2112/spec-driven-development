@@ -4,5 +4,5 @@
 - 
 
 ## New Feature Proposals
-- Implement Automation frameworks(API and UI Tests)
+- 
 - 
