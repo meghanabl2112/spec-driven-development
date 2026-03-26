@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ally Bank - Base Accounts</title>
+</head>
+<body>
+    <h1>Ally Bank Accounts</h1>
+    
+    <h3>Open New Account</h3>
+    <form id="newAccountForm">
+        <input type="text" id="accName" placeholder="Customer Name" required>
+        <select id="accType">
+            <option value="Savings">Savings</option>
+            <option value="Checking">Checking</option>
+        </select>
+        <input type="number" id="accDeposit" placeholder="Initial Deposit" required>
+        <button type="submit">Create Account</button>
+    </form>
+
+    <h3>All Accounts</h3>
+    <div id="accountsList"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
