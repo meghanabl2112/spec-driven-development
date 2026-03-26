@@ -21,4 +21,26 @@ public class AccountsDashboardPage {
     public boolean isCreateAccountFormVisible() {
         return driver.findElement(createAccountButton).isDisplayed();
     }
+
+    // New Locators for Account Creation
+    private By accNameInput = By.id("accName");
+    private By accDepositInput = By.id("accDeposit");
+    private By submitAccountBtn = By.xpath("//button[text()='Create Account']");
+    
+    // New Locators for Transactions
+    private By transAccIdInput = By.id("transAccId");
+    private By transAmountInput = By.id("transAmount");
+    private By submitTransBtn = By.xpath("//form[@id='transactionForm']//button");
+
+    public void createCheckingAccount(String name, String deposit) {
+        driver.findElement(accNameInput).sendKeys(name);
+        driver.findElement(accDepositInput).sendKeys(deposit);
+        driver.findElement(submitAccountBtn).click();
+    }
+
+    public void depositFunds(String accId, String amount) {
+        driver.findElement(transAccIdInput).sendKeys(accId);
+        driver.findElement(transAmountInput).sendKeys(amount);
+        driver.findElement(submitTransBtn).click();
+    }
 }

@@ -42,4 +42,33 @@ public class BankingUITests {
             driver.quit();
         }
     }
+
+    @Test
+    public void testCreateAccountFlow() throws InterruptedException {
+        // Create an account
+        dashboard.createCheckingAccount("Selenium User", "2500");
+        
+        // Wait a brief moment for the DOM to update via the explicit fetch call
+        Thread.sleep(1000); 
+
+        // Verify the account is visible in the page source
+        assertTrue(driver.getPageSource().contains("Selenium User"));
+        assertTrue(driver.getPageSource().contains("$2500.00"));
+    }
+
+    @Test
+    public void testDepositFlow() throws InterruptedException {
+        // Create an account and get its generated ID from the page somehow,
+        // or hardcode a known ID from test data to deposit funds.
+        
+        // Assuming 'acc-1' exists (you could ensure this in setup)
+        dashboard.depositFunds("acc-1", "500");
+        
+        Thread.sleep(500); // Wait for alert
+        
+        // Since the app uses JS alerts for transactions:
+        String alertText = driver.switchTo().alert().getText();
+        assertTrue(alertText.contains("Transaction successful"));
+        driver.switchTo().alert().accept();
+    }
 }
