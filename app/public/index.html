@@ -21,6 +21,18 @@
     <h3>All Accounts</h3>
     <div id="accountsList"></div>
 
+    <hr>
+    <h3>Perform Transaction</h3>
+    <form id="transactionForm">
+        <input type="text" id="transAccId" placeholder="Account ID (e.g., acc-168...)" required>
+        <select id="transType">
+            <option value="Deposit">Deposit</option>
+            <option value="Withdrawal">Withdrawal</option>
+        </select>
+        <input type="number" id="transAmount" placeholder="Amount" step="0.01" required>
+        <button type="submit">Submit</button>
+    </form>
+    
     <script src="app.js"></script>
 </body>
 </html>

@@ -30,4 +30,24 @@ app.post('/api/accounts', (req, res) => {
     res.status(201).json(newAccount);
 });
 
+// Perform a transaction
+app.post('/api/accounts/:id/transactions', (req, res) => {
+    const { type, amount } = req.body;
+    const acc = accounts.find(a => a.id === req.params.id);
+    const transAmount = parseFloat(amount);
+
+    if (!acc) return res.status(404).json({ error: 'Account not found' });
+
+    if (type === 'Withdrawal' && acc.balance < transAmount) {
+        return res.status(422).json({ error: 'Insufficient funds.' });
+    }
+    
+    acc.balance += (type === 'Deposit') ? transAmount : -transAmount;
+    
+    // Log the transaction
+    acc.transactions.push({ type, amount: transAmount, date: new Date().toISOString() });
+    
+    res.status(201).json({ newBalance: acc.balance });
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -33,4 +33,30 @@ document.addEventListener('DOMContentLoaded', () => {
         newAccountForm.reset();
         fetchAccounts();
     });
+
+    const transactionForm = document.getElementById('transactionForm');
+    
+    transactionForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const accId = document.getElementById('transAccId').value.trim();
+        const payload = {
+            type: document.getElementById('transType').value,
+            amount: document.getElementById('transAmount').value
+        };
+        
+        const res = await fetch(/api/accounts/${accId}/transactions, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        
+        if(res.ok) {
+            alert('Transaction successful!');
+            transactionForm.reset();
+            fetchAccounts(); // Refresh the balances list
+        } else {
+            const err = await res.json();
+            alert('Error: ' + err.error);
+        }
+    });
 });
