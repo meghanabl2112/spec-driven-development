@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             amount: document.getElementById('transAmount').value
         };
         
-        const res = await fetch(/api/accounts/${accId}/transactions, {
+        const res = await fetch(`/api/accounts/${accId}/transactions`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -54,6 +54,52 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Transaction successful!');
             transactionForm.reset();
             fetchAccounts(); // Refresh the balances list
+        } else {
+            const err = await res.json();
+            alert('Error: ' + err.error);
+        }
+    });
+
+    const bucketForm = document.getElementById('bucketForm');
+    const distributeForm = document.getElementById('distributeForm');
+
+    // Handle adding a new bucket
+    bucketForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const accId = document.getElementById('bucketAccId').value.trim();
+        const payload = {
+            name: document.getElementById('bucketName').value,
+            target: document.getElementById('bucketTarget').value
+        };
+        
+        const res = await fetch(`/api/accounts/${accId}/buckets`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        
+        if (res.ok) {
+            alert('Bucket created successfully!');
+            bucketForm.reset();
+        } else {
+            const err = await res.json();
+            alert('Error: ' + err.error);
+        }
+    });
+
+    // Handle auto-distributing funds
+    distributeForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const accId = document.getElementById('distAccId').value.trim();
+        
+        const res = await fetch(`/api/accounts/${accId}/distribute`, {
+            method: 'POST'
+        });
+        
+        if (res.ok) {
+            alert('Funds distributed across buckets successfully!');
+            distributeForm.reset();
+            fetchAccounts(); // Refresh the balances
         } else {
             const err = await res.json();
             alert('Error: ' + err.error);

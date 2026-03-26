@@ -50,4 +50,41 @@ app.post('/api/accounts/:id/transactions', (req, res) => {
     res.status(201).json({ newBalance: acc.balance });
 });
 
+// Add a Savings Bucket
+app.post('/api/accounts/:id/buckets', (req, res) => {
+    const acc = accounts.find(a => a.id === req.params.id);
+    if (!acc || acc.type !== 'Savings') {
+        return res.status(400).json({ error: 'Buckets require a Savings account.' });
+    }
+    
+    acc.buckets.push({
+        id: `bucket-${Date.now()}`,
+        name: req.body.name,
+        target: parseFloat(req.body.target),
+        balance: 0
+    });
+    
+    res.status(201).json(acc.buckets);
+});
+
+// Auto-Distribute Unallocated Funds
+app.post('/api/accounts/:id/distribute', (req, res) => {
+    const acc = accounts.find(a => a.id === req.params.id);
+    if (!acc || acc.type !== 'Savings') return res.status(400).json({ error: 'Invalid account.' });
+
+    let allocated = acc.buckets.reduce((sum, b) => sum + b.balance, 0);
+    let unallocated = acc.balance - allocated;
+
+    for (let bucket of acc.buckets) {
+        let deficit = bucket.target - bucket.balance;
+        if (deficit > 0 && unallocated > 0) {
+            let amountToAdd = Math.min(deficit, unallocated);
+            bucket.balance += amountToAdd;
+            unallocated -= amountToAdd;
+        }
+    }
+
+    res.json({ newBuckets: acc.buckets, unallocatedRemaining: unallocated });
+});
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -32,7 +32,23 @@
         <input type="number" id="transAmount" placeholder="Amount" step="0.01" required>
         <button type="submit">Submit</button>
     </form>
+
+    <hr>
+    <h3>Manage Savings Buckets (Savings Accounts Only)</h3>
+    <form id="bucketForm">
+        <input type="text" id="bucketAccId" placeholder="Account ID" required>
+        <input type="text" id="bucketName" placeholder="Bucket Name (e.g., Vacation)" required>
+        <input type="number" id="bucketTarget" placeholder="Target Goal ($)" required>
+        <button type="submit">Add Bucket</button>
+    </form>
     
+    <br>
+    
+    <form id="distributeForm">
+        <input type="text" id="distAccId" placeholder="Account ID" required>
+        <button type="submit">Auto-Distribute Funds</button>
+    </form>
+
     <script src="app.js"></script>
 </body>
 </html>
