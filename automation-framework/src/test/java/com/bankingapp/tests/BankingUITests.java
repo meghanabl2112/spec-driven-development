@@ -1,4 +1,4 @@
-package test.java.com.bankingapp.tests;
+package com.bankingapp.tests;
 
 import com.bankingapp.pages.AccountsDashboardPage;
 import org.junit.jupiter.api.AfterEach;
@@ -56,19 +56,19 @@ public class BankingUITests {
         assertTrue(driver.getPageSource().contains("$2500.00"));
     }
 
-    @Test
+   @Test
     public void testDepositFlow() throws InterruptedException {
-        // Create an account and get its generated ID from the page somehow,
-        // or hardcode a known ID from test data to deposit funds.
+        // Ensure there is at least one account to click on
+        dashboard.createCheckingAccount("Transaction User", "1000");
+        Thread.sleep(1000); // let UI update
         
-        // Assuming 'acc-1' exists (you could ensure this in setup)
-        dashboard.depositFunds("acc-1", "500");
+        // Click the card and deposit $500
+        dashboard.depositFunds("500");
         
-        Thread.sleep(500); // Wait for alert
+        // Wait for the UI success message to appear
+        Thread.sleep(1000); 
         
-        // Since the app uses JS alerts for transactions:
-        String alertText = driver.switchTo().alert().getText();
-        assertTrue(alertText.contains("Transaction successful"));
-        driver.switchTo().alert().accept();
+        // In your real UI, the message appears inside the div "transMessage"
+        assertTrue(driver.getPageSource().contains("Successful"));
     }
 }

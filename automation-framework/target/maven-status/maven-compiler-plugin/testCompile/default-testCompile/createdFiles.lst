@@ -1,0 +1,3 @@
+com\bankingapp\pages\AccountsDashboardPage.class
+com\bankingapp\tests\BankingUITests.class
+test\java\com\bankingapp\api\BankingAPI.class
